@@ -1,0 +1,100 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\Escape\Food\Board3\Board3.uvproj
+Project File Date:  11/20/2017
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SETSTEP?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=16.0 xdata=0 code=580
+creating hex file from "Board3"...
+"Board3" - 0 Error(s), 3 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+Main.c(49): warning C206: 'delay': missing function-prototype
+Main.c(49): error C267: 'delay': requires ANSI-style prototype
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SETSTEP?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=20.0 xdata=0 code=697
+creating hex file from "Board3"...
+"Board3" - 0 Error(s), 3 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SETSTEP?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=20.0 xdata=0 code=773
+creating hex file from "Board3"...
+"Board3" - 0 Error(s), 3 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SETSTEP?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=20.0 xdata=0 code=1029
+creating hex file from "Board3"...
+"Board3" - 0 Error(s), 3 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=20.0 xdata=0 code=1047
+creating hex file from "Board3"...
+"Board3" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=20.0 xdata=0 code=1047
+creating hex file from "Board3"...
+"Board3" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=20.0 xdata=0 code=1047
+creating hex file from "Board3"...
+"Board3" - 0 Error(s), 2 Warning(s).

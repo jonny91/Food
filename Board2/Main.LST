@@ -1,0 +1,206 @@
+C51 COMPILER V9.52.0.0   MAIN                                                              11/20/2017 13:52:16 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN Main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Main.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include <STC12C5A60S2.H>
+   2          #include "BackRoom.h"
+   3          #include "Board.h"
+   4          #include "uart.h"
+   5          #include "mp3.h"
+   6          
+   7          sbit INPUT_DOOR_00 = P0^0;
+   8          
+   9          sbit INPUT_RC522_01 = P0^1;
+  10          sbit INPUT_RC522_02 = P0^2;
+  11          sbit INPUT_RC522_03 = P0^3;
+  12          sbit INPUT_RC522_04 = P0^4;
+  13          sbit INPUT_RC522_05 = P0^5;
+  14          sbit INPUT_RC522_06 = P0^6;
+  15          sbit INPUT_RC522_07 = P0^7;
+  16          sbit INPUT_RC522_10 = P1^0;
+  17          sbit INPUT_RC522_11 = P1^1;
+  18          
+  19          sbit OUTPUT_LOCK_12 = P1^2;
+  20          
+  21          sbit INPUT_BUTTON_13 = P1^3;
+  22          sbit OUTPUT_BUTTON_14 = P1^4;
+  23          
+  24          sbit Hall_Switch_20 = P2^0;
+  25          sbit Hall_Switch_21 = P2^1;
+  26          sbit Hall_Switch_LOCK_22 = P2^2;
+  27          
+  28          sbit INPUT_BUTTON_23 = P2^3;//2个霍尔开关打开电磁锁里的按钮
+  29          sbit OUTPUT_BUTTON_24 = P2^4;//按钮输出
+  30          sbit OUTPUT_Room5_25 = P2^5;//房间5
+  31          
+  32          void Start();
+  33          void Check9Input();
+  34          void Button();
+  35          void HallSwitch();
+  36          void Button2();
+  37          
+  38          void init()
+  39          {
+  40   1        INPUT_DOOR_00 = 0;
+  41   1        
+  42   1        INPUT_RC522_01 = 0;
+  43   1        INPUT_RC522_02 = 0;
+  44   1        INPUT_RC522_03 = 0;
+  45   1        INPUT_RC522_04 = 0;
+  46   1        INPUT_RC522_05 = 0;
+  47   1        INPUT_RC522_06 = 0;
+  48   1        INPUT_RC522_07 = 0;
+  49   1        INPUT_RC522_10 = 0;
+  50   1        INPUT_RC522_11 = 0;
+  51   1        
+  52   1        OUTPUT_LOCK_12 = 1;
+  53   1        INPUT_BUTTON_13 = 0;
+  54   1        OUTPUT_BUTTON_14 = 1;
+  55   1        
+C51 COMPILER V9.52.0.0   MAIN                                                              11/20/2017 13:52:16 PAGE 2   
+
+  56   1        Hall_Switch_20 = 0;
+  57   1        Hall_Switch_21 = 0;
+  58   1        Hall_Switch_LOCK_22 = 1;
+  59   1        
+  60   1        INPUT_BUTTON_23 = 0;
+  61   1        OUTPUT_BUTTON_24 = 1;
+  62   1        OUTPUT_Room5_25 = 1;
+  63   1      }
+  64          
+  65          void main()
+  66          {
+  67   1        init();
+  68   1        uart_init();
+  69   1        mp3_init();
+  70   1      
+  71   1        delay_ms(100);  
+  72   1        
+  73   1        while(1)
+  74   1        {
+  75   2          switch(step)
+  76   2          {
+  77   3            case 0:
+  78   3              Start(); //关门开始
+  79   3              break;
+  80   3            case 1:
+  81   3              Check9Input();//检查9个RC522
+  82   3              break;
+  83   3            case 2:
+  84   3              Button();
+  85   3              break;
+  86   3            case 3:
+  87   3              HallSwitch();//2个霍尔开关
+  88   3              break;
+  89   3            case 4:
+  90   3              Button2();
+  91   3              break;
+  92   3            case 5:
+  93   3              break;
+  94   3          }
+  95   2        }
+  96   1      }
+  97          
+  98          void Start()
+  99          {
+ 100   1        if(INPUT_DOOR_00 == 1)
+ 101   1        {
+ 102   2          delay_ms(50);
+ 103   2          if(INPUT_DOOR_00 == 1)
+ 104   2          {
+ 105   3            setStep(1);
+ 106   3          }
+ 107   2        }
+ 108   1      }
+ 109          
+ 110          void Check9Input()
+ 111          {
+ 112   1        if((INPUT_RC522_01 == 1)&&
+ 113   1        (INPUT_RC522_02 == 1)&&
+ 114   1        (INPUT_RC522_03 == 1)&&
+ 115   1        (INPUT_RC522_04 == 1)&&
+ 116   1        (INPUT_RC522_05 == 1)&&
+ 117   1        (INPUT_RC522_06 == 1)&&
+C51 COMPILER V9.52.0.0   MAIN                                                              11/20/2017 13:52:16 PAGE 3   
+
+ 118   1        (INPUT_RC522_07 == 1)&&
+ 119   1        (INPUT_RC522_10 == 1)&&
+ 120   1        (INPUT_RC522_11 == 1))
+ 121   1        {
+ 122   2          delay_ms(50);
+ 123   2          if((INPUT_RC522_01 == 1)&&
+ 124   2          (INPUT_RC522_02 == 1)&&
+ 125   2          (INPUT_RC522_03 == 1)&&
+ 126   2          (INPUT_RC522_04 == 1)&&
+ 127   2          (INPUT_RC522_05 == 1)&&
+ 128   2          (INPUT_RC522_06 == 1)&&
+ 129   2          (INPUT_RC522_07 == 1)&&
+ 130   2          (INPUT_RC522_10 == 1)&&
+ 131   2          (INPUT_RC522_11 == 1))
+ 132   2          {
+ 133   3            OUTPUT_LOCK_12 = 0;//9个RC522放对位置 打开电磁锁
+ 134   3            setStep(2);
+ 135   3          }
+ 136   2        }
+ 137   1      }
+ 138          
+ 139          void Button()
+ 140          {
+ 141   1        if(INPUT_BUTTON_13 == 1)
+ 142   1        {
+ 143   2          delay_ms(50);
+ 144   2          if(INPUT_BUTTON_13 == 1)
+ 145   2          {
+ 146   3            OUTPUT_BUTTON_14 = 0;//按下按钮 打开房间5的门
+ 147   3            setStep(3);
+ 148   3          }
+ 149   2        }
+ 150   1      }
+ 151          
+ 152          void HallSwitch()
+ 153          {
+ 154   1        if((Hall_Switch_20 == 1)&&(Hall_Switch_21 == 1))
+ 155   1        {
+ 156   2          delay_ms(50);
+ 157   2          if((Hall_Switch_20 == 1)&&(Hall_Switch_21 == 1))
+ 158   2          {
+ 159   3            Hall_Switch_LOCK_22 = 0;//打开电磁锁
+ 160   3            setStep(4);
+ 161   3          }
+ 162   2        }
+ 163   1      }
+ 164          
+ 165          void Button2()
+ 166          {
+ 167   1        if(INPUT_BUTTON_23 == 1)
+ 168   1        {
+ 169   2          delay_ms(50);
+ 170   2          if(INPUT_BUTTON_23 == 1)
+ 171   2          {
+ 172   3            OUTPUT_BUTTON_24 = 0;
+ 173   3            OUTPUT_Room5_25 = 0;//打开房间5
+ 174   3            setStep(5);
+ 175   3          }
+ 176   2        }
+ 177   1      }
+
+
+C51 COMPILER V9.52.0.0   MAIN                                                              11/20/2017 13:52:16 PAGE 4   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    630    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
