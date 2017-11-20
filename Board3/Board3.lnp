@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"Main.obj" 
+TO "Board3" 
+RAMSIZE(256) 
