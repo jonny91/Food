@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MAIN                                                              11/17/2017 14:12:00 PAGE 1   
+C51 COMPILER V9.52.0.0   MAIN                                                              11/21/2017 15:00:30 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
@@ -16,128 +16,330 @@ line level    source
    7          sbit INPUT_DOOR_00 = P0^0;
    8          sbit INPUT_HEAVY_01 = P0^1;
    9          sbit OUTPUT_LOCK_02 = P0^2;//第一个电磁锁
-  10          //对应摆放3个
-  11          sbit INPUT_PUT_03 = P0^3;
+  10          
+  11          sbit INPUT_PUT_03 = P0^3;//三个对应摆放
   12          sbit INPUT_PUT_04 = P0^4;
   13          sbit INPUT_PUT_05 = P0^5;
   14          
   15          sbit OUTPUT_LOCK_06 = P0^6;//第二个电磁锁
-  16          sbit INPUT_AIRBELLOW_07 = P0^7;//拉风箱输入
-  17          
+  16          sbit INPUT_CHECKEN_07 = P0^7;//鸡是不是放进去了
+  17          sbit INPUT_LOCK_10 = P1^0;//第二个电磁锁是不是关好了
   18          
-  19          void Start();
-  20          void CheckHeavy();
-  21          void Put3();
-  22          void CheckClose();
-  23          void AirBellow();
+  19          sbit INPUT_AIRBELLOW_11 = P1^1;//拉风箱输入
+  20          sbit OUTPUT_LIGHT1_12 = P1^2;
+  21          sbit OUTPUT_LIGHT1_13 = P1^3;
+  22          sbit OUTPUT_LIGHT1_14 = P1^4;
+  23          sbit OUTPUT_LIGHT1_15 = P1^5;
   24          
-  25          void Init()
-  26          {
-  27   1        INPUT_DOOR_00 = 0;
-  28   1        INPUT_HEAVY_01 = 0;
-  29   1        OUTPUT_LOCK_02 = 1;
-  30   1        INPUT_PUT_03 = 0;
-  31   1        INPUT_PUT_04 = 0;
-  32   1        INPUT_PUT_05 = 0;
-  33   1        OUTPUT_LOCK_06 = 1;
-  34   1        INPUT_AIRBELLOW_07 = 0;
-  35   1      }
-  36          
-  37          void main()
-  38          {
-  39   1        Init();
-  40   1        uart_init();
-  41   1        mp3_init();
-  42   1      
-  43   1        delay_ms(100);  
-  44   1        
-  45   1        while(1)
-  46   1        {
-  47   2          switch(step)
-  48   2          {
-  49   3            case 0:
-  50   3              Start(); //关门开始
-  51   3              break;
-  52   3            case 1:
-  53   3              CheckHeavy();//称重
-  54   3              break;
-  55   3            case 2:
-C51 COMPILER V9.52.0.0   MAIN                                                              11/17/2017 14:12:00 PAGE 2   
+  25          sbit OUTPUT_CHANGE_16 = P1^6;//推杆推出
+  26          
+  27          sbit INPUT_PUT_17 = P1^7;//道具摆放
+  28          sbit OUTPUT_LOCK_20 = P2^0;//电磁锁3
+  29          
+  30          sbit INPUT_BUTTON_21 = P2^1;
+  31          sbit OUTPUT_BUTTON_22 = P2^2;//按钮输出
+  32          
+  33          sbit INPUT_SWITCH_23 = P2^3;
+  34          sbit INPUT_SWITCH_24 = P2^4;
+  35          
+  36          sbit INPUT_RC522_25 = P2^5;
+  37          sbit INPUT_RC522_26 = P2^6;
+  38          sbit INPUT_RC522_27 = P2^7;
+  39          sbit INPUT_RC522_33 = P3^3;
+  40          
+  41          sbit OUTPUT_LOCK_34 = P3^4;//移动机关正确之后的电磁锁
+  42          
+  43          sbit INPUT_BUTTON_35 = P3^5;
+  44          sbit OUTPUT_BUTTON_36 = P3^6;
+  45          sbit OUTPUT_LOCK_40 = P4^0;
+  46          
+  47          void Start();
+  48          void CheckHeavy();
+  49          void Put3();
+  50          void CheckClose();
+  51          void AirBellow();
+  52          void Putter();
+  53          void Put();
+  54          void Button();
+  55          void Switch();
+C51 COMPILER V9.52.0.0   MAIN                                                              11/21/2017 15:00:30 PAGE 2   
 
-  56   3              Put3(); //对应摆放3个
-  57   3              break;
-  58   3            case 4:
-  59   3              CheckClose(); //检查上面两个柜门是不是关闭
-  60   3              break;
-  61   3            case 5:
-  62   3              AirBellow();//拉风箱
-  63   3              break;
-  64   3          }
-  65   2        }
-  66   1      }
-  67          
-  68          void Start()
-  69          {
-  70   1        if(INPUT_DOOR_00 == 1)
-  71   1        {
-  72   2          delay_ms(8000);
-  73   2          setStep(1);   
-  74   2        }
-  75   1      }
-  76          
-  77          void CheckHeavy()
-  78          {
-  79   1        if(INPUT_HEAVY_01 == 1)
-  80   1        {
-  81   2          delay_ms(50);
-  82   2          if(INPUT_HEAVY_01 == 1) //称重
-  83   2          {
-  84   3            OUTPUT_LOCK_02 = 0;//打开电磁锁
-  85   3            setStep(2);
-  86   3          }
-  87   2        }
-  88   1      }
-  89          
-  90          void Put3()
-  91          {
-  92   1        if((INPUT_PUT_03 == 1)&&(INPUT_PUT_04 == 1)&&(INPUT_PUT_05 == 1))
-  93   1        {
-  94   2          delay_ms(50);
-  95   2          if((INPUT_PUT_03 == 1)&&(INPUT_PUT_04 == 1)&&(INPUT_PUT_05 == 1))
-  96   2          {
-  97   3            OUTPUT_LOCK_06 = 0;//第二个电磁锁断电
-  98   3            setStep(3);
-  99   3          }
- 100   2        }
- 101   1      }
- 102          
- 103          void CheckClose()
- 104          {
- 105   1        if((OUTPUT_LOCK_02 == 1)&&(OUTPUT_LOCK_06 == 1))
- 106   1        {
- 107   2          delay_ms(50);
- 108   2          if((OUTPUT_LOCK_02 == 1)&&(OUTPUT_LOCK_06 == 1))
- 109   2          {
- 110   3            Switch_Fan = 1;
- 111   3            setStep(4);
- 112   3          }
- 113   2        }
- 114   1      }
- 115          
- 116          void AirBellow()
- 117          {
-C51 COMPILER V9.52.0.0   MAIN                                                              11/17/2017 14:12:00 PAGE 3   
+  56          void Move();
+  57          void Button2();
+  58          
+  59          void Init()
+  60          {
+  61   1        INPUT_DOOR_00 = 0;
+  62   1        INPUT_HEAVY_01 = 0;
+  63   1        OUTPUT_LOCK_02 = 1;
+  64   1        INPUT_PUT_03 = 0;
+  65   1        INPUT_PUT_04 = 0;
+  66   1        INPUT_PUT_05 = 0;
+  67   1        OUTPUT_LOCK_06 = 1;
+  68   1        INPUT_CHECKEN_07 = 0;
+  69   1        INPUT_LOCK_10 = 0;
+  70   1        INPUT_AIRBELLOW_11 = 0;
+  71   1        OUTPUT_LIGHT1_12 = 1;
+  72   1        OUTPUT_LIGHT1_13 = 1;
+  73   1        OUTPUT_LIGHT1_14 = 1;
+  74   1        OUTPUT_LIGHT1_15 = 1;
+  75   1        OUTPUT_CHANGE_16 = 1;
+  76   1        INPUT_PUT_17 = 0;
+  77   1        OUTPUT_LOCK_20 = 1;
+  78   1        INPUT_BUTTON_21 = 0;
+  79   1        OUTPUT_BUTTON_22 = 1;
+  80   1        
+  81   1        INPUT_SWITCH_23 = 0;
+  82   1        INPUT_SWITCH_24 = 0;
+  83   1        
+  84   1        INPUT_RC522_25 = 0;
+  85   1        INPUT_RC522_26 = 0;
+  86   1        INPUT_RC522_27 = 0;
+  87   1        INPUT_RC522_33 = 0;
+  88   1        
+  89   1        OUTPUT_LOCK_34 = 1;
+  90   1        
+  91   1        INPUT_BUTTON_35 = 0;
+  92   1        OUTPUT_BUTTON_36 = 1;
+  93   1        OUTPUT_LOCK_40 = 1;
+  94   1      }
+  95          
+  96          void main()
+  97          {
+  98   1        Init();
+  99   1        uart_init();
+ 100   1        mp3_init();
+ 101   1      
+ 102   1        delay_ms(100);  
+ 103   1        
+ 104   1        while(1)
+ 105   1        {
+ 106   2          switch(step)
+ 107   2          {
+ 108   3            case 0:
+ 109   3              Start(); //关门开始
+ 110   3              break;
+ 111   3            case 1:
+ 112   3              CheckHeavy();//称重
+ 113   3              break;
+ 114   3            case 2:
+ 115   3              Put3(); //对应摆放3个
+ 116   3              break;
+ 117   3            case 3:
+C51 COMPILER V9.52.0.0   MAIN                                                              11/21/2017 15:00:30 PAGE 3   
 
- 118   1        
- 119   1      }
+ 118   3              CheckClose(); //检查上面两个柜门是不是关闭
+ 119   3              break;
+ 120   3            case 4:
+ 121   3              AirBellow();//拉风箱
+ 122   3              break;
+ 123   3            case 5:
+ 124   3              Putter();
+ 125   3              break;
+ 126   3            case 6:
+ 127   3              Put();//道具摆放
+ 128   3              break;
+ 129   3            case 7:
+ 130   3              Button();
+ 131   3              break;
+ 132   3            case 8://北京皇宫
+ 133   3              Switch();
+ 134   3              break;
+ 135   3            case 9://移动机关
+ 136   3              Move();
+ 137   3              break;
+ 138   3            case 10:
+ 139   3              Button2();
+ 140   3              break;
+ 141   3            case 11:
+ 142   3              break;
+ 143   3          }
+ 144   2        }
+ 145   1      }
+ 146          
+ 147          void Start()
+ 148          {
+ 149   1        if(INPUT_DOOR_00 == 1)
+ 150   1        {
+ 151   2          delay_ms(8000);
+ 152   2          setStep(1);   
+ 153   2        }
+ 154   1      }
+ 155          
+ 156          void CheckHeavy()
+ 157          {
+ 158   1        if(INPUT_HEAVY_01 == 1)
+ 159   1        {
+ 160   2          delay_ms(50);
+ 161   2          if(INPUT_HEAVY_01 == 1) //称重
+ 162   2          {
+ 163   3            OUTPUT_LOCK_02 = 0;//打开电磁锁
+ 164   3            setStep(2);
+ 165   3          }
+ 166   2        }
+ 167   1      }
+ 168          
+ 169          void Put3()
+ 170          {
+ 171   1        if((INPUT_PUT_03 == 1)&&(INPUT_PUT_04 == 1)&&(INPUT_PUT_05 == 1))
+ 172   1        {
+ 173   2          delay_ms(50);
+ 174   2          if((INPUT_PUT_03 == 1)&&(INPUT_PUT_04 == 1)&&(INPUT_PUT_05 == 1))
+ 175   2          {
+ 176   3            OUTPUT_LOCK_06 = 0;//第二个电磁锁断电
+ 177   3            setStep(3);
+ 178   3          }
+ 179   2        }
+C51 COMPILER V9.52.0.0   MAIN                                                              11/21/2017 15:00:30 PAGE 4   
+
+ 180   1      }
+ 181          
+ 182          void CheckClose()
+ 183          {
+ 184   1        if((INPUT_CHECKEN_07 == 1)&&(INPUT_LOCK_10 == 1))
+ 185   1        {
+ 186   2          delay_ms(50);
+ 187   2          if((INPUT_CHECKEN_07 == 1)&&(INPUT_LOCK_10 == 1))
+ 188   2          {
+ 189   3            Switch_Fan = 1;
+ 190   3            setStep(4);
+ 191   3          }
+ 192   2        }
+ 193   1      }
+ 194          
+ 195          void AirBellow()
+ 196          {
+ 197   1        if((LastAirBellowStatue == 0)&&(INPUT_AIRBELLOW_11 == 1))
+ 198   1        {
+ 199   2          Air_Bellow_Current_Count++;
+ 200   2        }
+ 201   1        LastAirBellowStatue = LastAirBellowStatue;
+ 202   1        if(Air_Bellow_Current_Count == 0)
+ 203   1        {
+ 204   2          OUTPUT_LIGHT1_12 = 0;
+ 205   2          OUTPUT_LIGHT1_13 = 0;
+ 206   2          OUTPUT_LIGHT1_14 = 0;
+ 207   2          OUTPUT_LIGHT1_15 = 0;
+ 208   2        }
+ 209   1        if(Air_Bellow_Current_Count == 1)
+ 210   1        {
+ 211   2          OUTPUT_LIGHT1_12 = 1;
+ 212   2          OUTPUT_LIGHT1_13 = 0;
+ 213   2          OUTPUT_LIGHT1_14 = 0;
+ 214   2          OUTPUT_LIGHT1_15 = 0;
+ 215   2        }
+ 216   1        if(Air_Bellow_Current_Count == 2)
+ 217   1        {
+ 218   2          OUTPUT_LIGHT1_12 = 1;
+ 219   2          OUTPUT_LIGHT1_13 = 1;
+ 220   2          OUTPUT_LIGHT1_14 = 0;
+ 221   2          OUTPUT_LIGHT1_15 = 0;
+ 222   2        }
+ 223   1        if(Air_Bellow_Current_Count == 3)
+ 224   1        {
+ 225   2          OUTPUT_LIGHT1_12 = 1;
+ 226   2          OUTPUT_LIGHT1_13 = 1;
+ 227   2          OUTPUT_LIGHT1_14 = 1;
+ 228   2          OUTPUT_LIGHT1_15 = 0;
+ 229   2        }
+ 230   1        if(Air_Bellow_Current_Count >= 4)
+ 231   1        {
+ 232   2          OUTPUT_LIGHT1_12 = 1;
+ 233   2          OUTPUT_LIGHT1_13 = 1;
+ 234   2          OUTPUT_LIGHT1_14 = 1;
+ 235   2          OUTPUT_LIGHT1_15 = 1;
+ 236   2          
+ 237   2          delay_ms(1000);
+ 238   2          setStep(5);
+ 239   2        }
+ 240   1      }
+ 241          
+C51 COMPILER V9.52.0.0   MAIN                                                              11/21/2017 15:00:30 PAGE 5   
+
+ 242          void Putter()
+ 243          {
+ 244   1        OUTPUT_CHANGE_16 = 0;//推杆推出
+ 245   1        delay_ms(1000);
+ 246   1        OUTPUT_LOCK_06 = 0;//电磁锁断电
+ 247   1        setStep(6);
+ 248   1      }
+ 249          
+ 250          void Put()
+ 251          {
+ 252   1        if(INPUT_PUT_17 == 1)
+ 253   1        {
+ 254   2          delay_ms(50);
+ 255   2          if(INPUT_PUT_17 == 1)
+ 256   2          {
+ 257   3            OUTPUT_LOCK_20 = 0;//打开电磁锁3
+ 258   3            setStep(7);
+ 259   3          }
+ 260   2        }
+ 261   1      }
+ 262          
+ 263          void Button()
+ 264          {
+ 265   1        if(INPUT_BUTTON_21 == 1)
+ 266   1        {
+ 267   2          delay_ms(50);
+ 268   2          if(INPUT_BUTTON_21 == 1)
+ 269   2          {
+ 270   3            OUTPUT_BUTTON_22 = 0;
+ 271   3            setStep(8);
+ 272   3          }
+ 273   2        }
+ 274   1      }
+ 275          
+ 276          void Switch()
+ 277          {
+ 278   1        //机关扭动2个输入高电平
+ 279   1        if((INPUT_SWITCH_23 == 1)&&(INPUT_SWITCH_24 == 1))
+ 280   1        {
+ 281   2          delay_ms(50);
+ 282   2          if((INPUT_SWITCH_23 == 1)&&(INPUT_SWITCH_24 == 1))
+ 283   2          {
+ 284   3            setStep(9);//激活移动机关
+ 285   3          }
+ 286   2        }
+ 287   1      }
+ 288          
+ 289          void Move()
+ 290          {
+ 291   1        if((INPUT_RC522_25 == 1)&&(INPUT_RC522_26 == 1)&&(INPUT_RC522_27 == 1)&&(INPUT_RC522_33 == 1))
+ 292   1        {
+ 293   2          delay_ms(50);
+ 294   2          if((INPUT_RC522_25 == 1)&&(INPUT_RC522_26 == 1)&&(INPUT_RC522_27 == 1)&&(INPUT_RC522_33 == 1))
+ 295   2          {
+ 296   3            OUTPUT_LOCK_34 = 0;
+ 297   3            setStep(10);
+ 298   3          }
+ 299   2        }
+ 300   1      }
+ 301          
+ 302          void Button2()
+ 303          {
+C51 COMPILER V9.52.0.0   MAIN                                                              11/21/2017 15:00:30 PAGE 6   
+
+ 304   1        if(INPUT_BUTTON_35 == 1)
+ 305   1        {
+ 306   2          delay_ms(50);
+ 307   2          if(INPUT_BUTTON_35 == 1)
+ 308   2          {
+ 309   3            OUTPUT_BUTTON_36 = 0;
+ 310   3            OUTPUT_LOCK_40 = 0;
+ 311   3            setStep(11);
+ 312   3          }
+ 313   2        }
+ 314   1      
+ 315   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    562    ----
+   CODE SIZE        =    909    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      7       4
+   DATA SIZE        =     11       4
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

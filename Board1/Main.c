@@ -1,4 +1,4 @@
-#include <REGX52.H>
+#include <STC12C5A60S2.H>
 #include "BackRoom.h"
 #include "Board.h"
 #include "uart.h"
@@ -24,12 +24,37 @@ sbit OUTPUT_LIGHT1_15 = P1^5;
 
 sbit OUTPUT_CHANGE_16 = P1^6;//推杆推出
 
+sbit INPUT_PUT_17 = P1^7;//道具摆放
+sbit OUTPUT_LOCK_20 = P2^0;//电磁锁3
+
+sbit INPUT_BUTTON_21 = P2^1;
+sbit OUTPUT_BUTTON_22 = P2^2;//按钮输出
+
+sbit INPUT_SWITCH_23 = P2^3;
+sbit INPUT_SWITCH_24 = P2^4;
+
+sbit INPUT_RC522_25 = P2^5;
+sbit INPUT_RC522_26 = P2^6;
+sbit INPUT_RC522_27 = P2^7;
+sbit INPUT_RC522_33 = P3^3;
+
+sbit OUTPUT_LOCK_34 = P3^4;//移动机关正确之后的电磁锁
+
+sbit INPUT_BUTTON_35 = P3^5;
+sbit OUTPUT_BUTTON_36 = P3^6;
+sbit OUTPUT_LOCK_40 = P4^0;
+
 void Start();
 void CheckHeavy();
 void Put3();
 void CheckClose();
 void AirBellow();
 void Putter();
+void Put();
+void Button();
+void Switch();
+void Move();
+void Button2();
 
 void Init()
 {
@@ -48,6 +73,24 @@ void Init()
 	OUTPUT_LIGHT1_14 = 1;
 	OUTPUT_LIGHT1_15 = 1;
 	OUTPUT_CHANGE_16 = 1;
+	INPUT_PUT_17 = 0;
+	OUTPUT_LOCK_20 = 1;
+	INPUT_BUTTON_21 = 0;
+	OUTPUT_BUTTON_22 = 1;
+	
+	INPUT_SWITCH_23 = 0;
+	INPUT_SWITCH_24 = 0;
+	
+	INPUT_RC522_25 = 0;
+	INPUT_RC522_26 = 0;
+	INPUT_RC522_27 = 0;
+	INPUT_RC522_33 = 0;
+	
+	OUTPUT_LOCK_34 = 1;
+	
+	INPUT_BUTTON_35 = 0;
+	OUTPUT_BUTTON_36 = 1;
+	OUTPUT_LOCK_40 = 1;
 }
 
 void main()
@@ -79,6 +122,23 @@ void main()
 				break;
 			case 5:
 				Putter();
+				break;
+			case 6:
+				Put();//道具摆放
+				break;
+			case 7:
+				Button();
+				break;
+			case 8://北京皇宫
+				Switch();
+				break;
+			case 9://移动机关
+				Move();
+				break;
+			case 10:
+				Button2();
+				break;
+			case 11:
 				break;
 		}
 	}
@@ -185,4 +245,71 @@ void Putter()
 	delay_ms(1000);
 	OUTPUT_LOCK_06 = 0;//电磁锁断电
 	setStep(6);
+}
+
+void Put()
+{
+	if(INPUT_PUT_17 == 1)
+	{
+		delay_ms(50);
+		if(INPUT_PUT_17 == 1)
+		{
+			OUTPUT_LOCK_20 = 0;//打开电磁锁3
+			setStep(7);
+		}
+	}
+}
+
+void Button()
+{
+	if(INPUT_BUTTON_21 == 1)
+	{
+		delay_ms(50);
+		if(INPUT_BUTTON_21 == 1)
+		{
+			OUTPUT_BUTTON_22 = 0;
+			setStep(8);
+		}
+	}
+}
+
+void Switch()
+{
+	//机关扭动2个输入高电平
+	if((INPUT_SWITCH_23 == 1)&&(INPUT_SWITCH_24 == 1))
+	{
+		delay_ms(50);
+		if((INPUT_SWITCH_23 == 1)&&(INPUT_SWITCH_24 == 1))
+		{
+			setStep(9);//激活移动机关
+		}
+	}
+}
+
+void Move()
+{
+	if((INPUT_RC522_25 == 1)&&(INPUT_RC522_26 == 1)&&(INPUT_RC522_27 == 1)&&(INPUT_RC522_33 == 1))
+	{
+		delay_ms(50);
+		if((INPUT_RC522_25 == 1)&&(INPUT_RC522_26 == 1)&&(INPUT_RC522_27 == 1)&&(INPUT_RC522_33 == 1))
+		{
+			OUTPUT_LOCK_34 = 0;
+			setStep(10);
+		}
+	}
+}
+
+void Button2()
+{
+	if(INPUT_BUTTON_35 == 1)
+	{
+		delay_ms(50);
+		if(INPUT_BUTTON_35 == 1)
+		{
+			OUTPUT_BUTTON_36 = 0;
+			OUTPUT_LOCK_40 = 0;
+			setStep(11);
+		}
+	}
+
 }

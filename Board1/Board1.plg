@@ -3,7 +3,17 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-D:\Escape\Food\Board1\Board1.uvproj
-Project File Date:  11/17/2017
+E:\Project\EscapeRoom\Food\Board1\Board1.uvproj
+Project File Date:  11/21/2017
 
 <h2>Output:</h2>
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDC?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PLAY_MP3?MAIN
+Program Size: data=24.0 xdata=0 code=1101
+"Board1" - 0 Error(s), 2 Warning(s).
